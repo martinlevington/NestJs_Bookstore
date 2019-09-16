@@ -1,11 +1,11 @@
-import { Controller, Get, Param, Post, Body, Query, Delete, ValidationPipe, UsePipes } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Query, Delete, ValidationPipe, UsePipes, ParseIntPipe } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDTO } from './dto/create-book.dto';
 
 @Controller('books')
 export class BooksController {
 
-    constructor(private booksService: BooksService) { }
+    constructor(private readonly  booksService: BooksService) { }
 
     @Get()
     async getBooks() {
@@ -14,7 +14,7 @@ export class BooksController {
     }
 
     @Get(':bookID')
-    async getBook(@Param('bookID') bookID) {
+    async getBook(@Param('bookID', new ParseIntPipe()) bookID) {
         const book = await this.booksService.getBook(bookID);
         return book;
     }
